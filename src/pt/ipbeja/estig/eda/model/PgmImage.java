@@ -54,16 +54,18 @@ public class PgmImage {
 
 	public BufferedImage exportImage(boolean showMarkedPath) {
 		BufferedImage image = new BufferedImage(this.imageWidth,
-				this.imageHeight, BufferedImage.TYPE_BYTE_GRAY);
+				this.imageHeight, BufferedImage.TYPE_INT_RGB);
 		int gv = 0;
 		for (int y = 0; y < imageHeight; y++) {
 			for (int x = 0; x < imageWidth; x++) {
 
-				if (imageNodes[y][x].isPartOfPath())
+				if (imageNodes[y][x].isPartOfPath()) {
 					gv = 255;
-				else
+					image.setRGB(x, y, new Color(0, gv, 0).getRGB());
+				} else {
 					gv = imageNodes[y][x].getGrayValue();
-				image.setRGB(x, y, new Color(gv, gv, gv).getRGB());
+					image.setRGB(x, y, new Color(gv, gv, gv).getRGB());
+				}
 
 			}
 		}
