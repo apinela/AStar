@@ -3,13 +3,13 @@ package pt.ipbeja.estig.eda.model;
 public class Node {
 	private int x;
 	private int y;
-	private long time;
+	private double time;
 
-	public long getTime() {
+	public double getTime() {
 		return time;
 	}
 
-	public void setTime(long time) {
+	public void setTime(double time) {
 		this.time = time;
 	}
 

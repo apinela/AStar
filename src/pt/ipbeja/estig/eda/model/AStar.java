@@ -14,22 +14,23 @@ public class AStar {
 	private List<Node> nodesOL; // Nodes open list
 	private List<Node> nodesCL; // Nodes closed list
 	private List<Double> scoreList; // Score list of nodes in open list
-	private int normalizeHSteps = 0;
+	private int normalizeHSteps;
 	private int method;
+	private double elapsedTime;
 
 	public AStar(PgmImage image) {
 		this.image = image;
 
 	}
 
-	
-	
 	public List<Node> findBestRoute(Node startNode, Node goalNode, int method) {
+		long startTime = System.nanoTime();
 		this.sNode = startNode;
 		this.gNode = goalNode;
 		this.method = method;
 		this.nodesOL = new ArrayList<Node>();
 		this.nodesCL = new ArrayList<Node>();
+		this.normalizeHSteps = 0;
 
 		cNode = sNode;
 		cNode.setPartOfPath(true);
@@ -57,13 +58,23 @@ public class AStar {
 
 			cNode = nodesOL.get(index);
 			cNode.setPartOfPath(true);
-			cNode.setTime(System.nanoTime());
+			cNode.setTime(System.nanoTime()-startTime);
 			nodesCL.add(cNode);
 
 		}
-
+		this.elapsedTime = System.nanoTime() - startTime;
+		
 		return nodesCL;
 
+	}
+
+	public double getElapsedTime() {
+		return elapsedTime;
+	}
+	
+	public double getAvgTime() {		
+		return elapsedTime / (nodesCL.size());
+		
 	}
 
 	private double fScore(Node nodeToEvaluateScore) {
@@ -71,7 +82,6 @@ public class AStar {
 		double h = hScore(nodeToEvaluateScore);
 		if (normalizeHSteps==0)
 			normalizeHSteps = (int) (5 * Math.round(Math.sqrt(h) / 5));
-
 		return g + (h / normalizeHSteps);
 	}
 
@@ -82,12 +92,12 @@ public class AStar {
 		int relativeY;
 
 		if (this.method == 1) {
-			// Distancia "Manhattan"
+			// Manhattan distance
 			relativeX = Math.abs(gNode.getX() - nodeToEvaluateScore.getX());
 			relativeY = Math.abs(gNode.getY() - nodeToEvaluateScore.getY());
 			result = relativeX + relativeY;
 		} else {
-			// Distancia "Euclidean"
+			// Euclidean distance
 			relativeX = nodeToEvaluateScore.getX() - gNode.getX();
 			relativeY = nodeToEvaluateScore.getY() - gNode.getY();
 			result = (double) Math.sqrt((relativeX * relativeX) + (relativeY * relativeY));
@@ -97,9 +107,7 @@ public class AStar {
 	}
 
 	private double gScore(Node nodeToEvaluateScore) {
-		return (double) 1
-				- ((double) (nodeToEvaluateScore.getGrayValue()) / (double) (this.image
-						.getImageMaxGrayValue()));
+		return 1 - ( (double) (nodeToEvaluateScore.getGrayValue()) / (this.image.getImageMaxGrayValue()));
 	}
 
 	private List<Node> getNeighbours(Node cNode) {
