@@ -18,7 +18,7 @@ public class Main {
 			;
 
 			for (int n = 0; n < nodes.size(); n++)
-				sb.append((n+1) + " " + nodes.get(n) + "\n");
+				sb.append(n + 1 + " " + nodes.get(n) + "\n");
 			file.write(sb.toString());
 			file.close();
 		} catch (final Exception e) {
@@ -61,6 +61,8 @@ public class Main {
 				a.findBestRoute(startNode, finalNode, AStar.METHOD_MANHATTAN);
 				image.writePgmImage(System.getProperty("user.dir")
 						+ "\\img\\peppersgrad_manhattan_test.pgm", true);
+				image.exportPngImage(System.getProperty("user.dir")
+						+ "\\img\\peppersgrad_manhattan_test.png", true);
 				ImageView.RenderImage(
 						"Manhattan - Elapsed time: " + a.getElapsedTime()
 								+ "ns | Avg time: " + a.getAvgTime() + "ns",
@@ -68,6 +70,8 @@ public class Main {
 				a.findBestRoute(startNode, finalNode, AStar.METHOD_EUCLIDEAN);
 				image.writePgmImage(System.getProperty("user.dir")
 						+ "\\img\\peppersgrad_euclidean_test.pgm", true);
+				image.exportPngImage(System.getProperty("user.dir")
+						+ "\\img\\peppersgrad_euclidean_test.png", true);
 				ImageView.RenderImage(
 						"Euclidean - Elapsed time: " + a.getElapsedTime()
 								+ "ns | Avg time: " + a.getAvgTime() + "ns",

@@ -10,6 +10,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
+import javax.imageio.ImageIO;
+
 public class PgmImage {
 
 	private final int imageHeight;
@@ -66,6 +68,15 @@ public class PgmImage {
 				}
 
 		return image;
+	}
+
+	public void exportPngImage(final String filePath,
+			final boolean showMarkedPath) {
+		try {
+			ImageIO.write(this.exportImage(showMarkedPath), "PNG", new File(
+					filePath));
+		} catch (final IOException e) {
+		}
 	}
 
 	public int getImageHeight() {

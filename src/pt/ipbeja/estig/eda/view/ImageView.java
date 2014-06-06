@@ -10,26 +10,31 @@ import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class ImageView extends JPanel {
-	public static void RenderImage(String title, Image image) {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3436022022110009197L;
+
+	public static void RenderImage(final String title, final Image image) {
 		try {
 			class ImageThread implements Runnable {
 				Image image;
 				String title;
 
-				ImageThread(String title, Image image) {
+				ImageThread(final String title, final Image image) {
 					this.image = image;
 					this.title = title;
 				}
 
 				@Override
 				public void run() {
-					JFrame f = new JFrame();
+					final JFrame f = new JFrame();
 					f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					ImageView iv = new ImageView(image);
+					final ImageView iv = new ImageView(this.image);
 					// f.setLayout(new BorderLayout());
 					f.add(iv, BorderLayout.CENTER);
 					f.pack();
-					f.setTitle(title);
+					f.setTitle(this.title);
 					f.setVisible(true);
 					f.setResizable(false);
 
@@ -39,21 +44,21 @@ public class ImageView extends JPanel {
 			javax.swing.SwingUtilities.invokeAndWait(new ImageThread(title,
 					image));
 
-		} catch (Exception e) {
+		} catch (final Exception e) {
 		}
 
 	}
 
-	private Image image;
+	private final Image image;
 
-	public ImageView(Image image) {
+	public ImageView(final Image image) {
 		this.image = image;
 		this.setPreferredSize(new Dimension(image.getWidth(null), image
 				.getHeight(null)));
 	}
 
 	@Override
-	public void paintComponent(Graphics g) {
+	public void paintComponent(final Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(this.image, 0, 0, this);
 	}
