@@ -26,7 +26,7 @@ public class ImageView extends JPanel {
 					JFrame f = new JFrame();
 					f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					ImageView iv = new ImageView(image);
-					//f.setLayout(new BorderLayout());
+					// f.setLayout(new BorderLayout());
 					f.add(iv, BorderLayout.CENTER);
 					f.pack();
 					f.setTitle(title);
@@ -36,7 +36,8 @@ public class ImageView extends JPanel {
 				}
 
 			}
-			javax.swing.SwingUtilities.invokeAndWait(new ImageThread(title, image));
+			javax.swing.SwingUtilities.invokeAndWait(new ImageThread(title,
+					image));
 
 		} catch (Exception e) {
 		}

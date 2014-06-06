@@ -12,38 +12,37 @@ import java.util.Scanner;
 
 public class PgmImage {
 
-	private int imageWidth;
-	private int imageHeight;
-	private int imageMaxGrayValue;
-	private Node[][] imageNodes;
+	private final int imageHeight;
+	private final int imageMaxGrayValue;
+	private final Node[][] imageNodes;
+	private final int imageWidth;
 
-	public PgmImage(String imagePath) throws FileNotFoundException, IOException {
+	public PgmImage(final String imagePath) throws FileNotFoundException,
+			IOException {
 
 		/*
 		 * Parse file header (width, height and max gray value of pgm matrix)
 		 */
-		FileInputStream is = new FileInputStream(imagePath);
+		final FileInputStream is = new FileInputStream(imagePath);
 
-		Scanner isScanner = new Scanner(is);
+		final Scanner isScanner = new Scanner(is);
 
 		isScanner.nextLine();
 		isScanner.nextLine();
 
-		imageWidth = isScanner.nextInt();
-		imageHeight = isScanner.nextInt();
-		imageMaxGrayValue = isScanner.nextInt();
+		this.imageWidth = isScanner.nextInt();
+		this.imageHeight = isScanner.nextInt();
+		this.imageMaxGrayValue = isScanner.nextInt();
 
-		imageNodes = new Node[imageHeight][imageWidth];
+		this.imageNodes = new Node[this.imageHeight][this.imageWidth];
 
 		/*
 		 * Parse pgm matrix it self into a List of Nodes
 		 */
 
-		for (int y = 0; y < imageHeight; y++) {
-			for (int x = 0; x < imageWidth; x++) {
-				imageNodes[y][x] = new Node(x, y, isScanner.nextInt());
-			}
-		}
+		for (int y = 0; y < this.imageHeight; y++)
+			for (int x = 0; x < this.imageWidth; x++)
+				this.imageNodes[y][x] = new Node(x, y, isScanner.nextInt());
 
 		/*
 		 * Close stream
@@ -52,70 +51,65 @@ public class PgmImage {
 
 	}
 
-	public BufferedImage exportImage(boolean showMarkedPath) {
-		BufferedImage image = new BufferedImage(this.imageWidth,
+	public BufferedImage exportImage(final boolean showMarkedPath) {
+		final BufferedImage image = new BufferedImage(this.imageWidth,
 				this.imageHeight, BufferedImage.TYPE_INT_RGB);
 		int gv = 0;
-		for (int y = 0; y < imageHeight; y++) {
-			for (int x = 0; x < imageWidth; x++) {
-
-				if (imageNodes[y][x].isPartOfPath()) {
+		for (int y = 0; y < this.imageHeight; y++)
+			for (int x = 0; x < this.imageWidth; x++)
+				if (this.imageNodes[y][x].isPartOfPath()) {
 					gv = 255;
 					image.setRGB(x, y, new Color(0, gv, 0).getRGB());
 				} else {
-					gv = imageNodes[y][x].getGrayValue();
+					gv = this.imageNodes[y][x].getGrayValue();
 					image.setRGB(x, y, new Color(gv, gv, gv).getRGB());
 				}
-
-			}
-		}
 
 		return image;
 	}
 
 	public int getImageHeight() {
-		return imageHeight;
+		return this.imageHeight;
 	}
 
 	public int getImageMaxGrayValue() {
-		return imageMaxGrayValue;
+		return this.imageMaxGrayValue;
 	}
 
 	public Node[][] getImageNodes() {
-		return imageNodes;
+		return this.imageNodes;
 	}
 
 	public int getImageWidth() {
-		return imageWidth;
+		return this.imageWidth;
 	}
 
-	public Node getNode(int x, int y) {
+	public Node getNode(final int x, final int y) {
 
 		try {
-			return imageNodes[y][x];
-		} catch (Exception e) {
+			return this.imageNodes[y][x];
+		} catch (final Exception e) {
 			return null;
 		}
 
 	}
 
-	public void writePgmImage(String path, boolean showMarkedPath)
+	public void writePgmImage(final String path, final boolean showMarkedPath)
 			throws IOException {
-		File file = new File(path);
-		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+		final File file = new File(path);
+		final BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 
 		sb.append("P2\n");
 		sb.append("# CREATOR: EDA1314-5338\n");
 		sb.append(this.imageWidth + " " + this.imageHeight + "\n");
 		sb.append(this.imageMaxGrayValue + "\n");
-		for (int y = 0; y < imageHeight; y++) {
-			for (int x = 0; x < imageWidth; x++) {
-				sb.append((showMarkedPath && imageNodes[y][x].isPartOfPath()) ? "255"
-						: imageNodes[y][x].getGrayValue() + "\n");
-			}
-		}
+		for (int y = 0; y < this.imageHeight; y++)
+			for (int x = 0; x < this.imageWidth; x++)
+				sb.append(showMarkedPath
+						&& this.imageNodes[y][x].isPartOfPath() ? "255"
+						: this.imageNodes[y][x].getGrayValue() + "\n");
 
 		try {
 
